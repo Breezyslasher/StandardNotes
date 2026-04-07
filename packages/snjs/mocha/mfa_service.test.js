@@ -31,6 +31,8 @@ describe('mfa service', () => {
   })
 
   it('generates 160 bit base32-encoded mfa secret', async () => {
+    await registerApp(application)
+
     const RFC4648 = /[ABCDEFGHIJKLMNOPQRSTUVWXYZ234567]/g
 
     const secret = await application.mfa.generateMfaSecret()
