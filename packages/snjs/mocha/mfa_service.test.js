@@ -15,6 +15,10 @@ const registerApp = async (application) => {
   return application
 }
 
+const getOtpTokenForSecret = async (application, secret) => {
+  return application.options.crypto.totpToken(secret, Date.now(), 6, 30)
+}
+
 describe('mfa service', () => {
   let application
 
@@ -48,7 +52,7 @@ describe('mfa service', () => {
     expect(await application.mfa.isMfaActivated()).to.equal(false)
 
     const secret = await application.mfa.generateMfaSecret()
-    const token = await application.mfa.getOtpToken(secret)
+    const token = await getOtpTokenForSecret(application, secret)
 
     await application.mfa.enableMfa(secret, token)
 
@@ -64,7 +68,7 @@ describe('mfa service', () => {
 
     Factory.handlePasswordChallenges(application, accountPassword)
     const secret = await application.mfa.generateMfaSecret()
-    const token = await application.mfa.getOtpToken(secret)
+    const token = await getOtpTokenForSecret(application, secret)
 
     sinon.spy(application.challenges, 'sendChallenge')
     
@@ -82,7 +86,7 @@ describe('mfa service', () => {
 
     Factory.handlePasswordChallenges(application, accountPassword)
     const secret = await application.mfa.generateMfaSecret()
-    const token = await application.mfa.getOtpToken(secret)
+    const token = await getOtpTokenForSecret(application, secret)
 
     await application.mfa.enableMfa(secret, token)
 
@@ -102,7 +106,7 @@ describe('mfa service', () => {
     Factory.handlePasswordChallenges(application, accountPassword)
 
     const secret = await application.mfa.generateMfaSecret()
-    const token = await application.mfa.getOtpToken(secret)
+    const token = await getOtpTokenForSecret(application, secret)
 
     await application.mfa.enableMfa(secret, token)
     
@@ -122,7 +126,7 @@ describe('mfa service', () => {
     Factory.handlePasswordChallenges(application, accountPassword)
 
     const secret = await application.mfa.generateMfaSecret()
-    const token = await application.mfa.getOtpToken(secret)
+    const token = await getOtpTokenForSecret(application, secret)
 
     await application.mfa.enableMfa(secret, token)
     

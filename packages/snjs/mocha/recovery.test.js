@@ -72,7 +72,7 @@ describe('account recovery', function () {
 
   it('should disable MFA after recovery sign in', async () => {
     const secret = await application.mfa.generateMfaSecret()
-    const token = await application.mfa.getOtpToken(secret)
+    const token = await application.options.crypto.totpToken(secret, Date.now(), 6, 30)
 
     await application.mfa.enableMfa(secret, token)
 
