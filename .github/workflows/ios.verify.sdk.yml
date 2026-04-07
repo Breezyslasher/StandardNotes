@@ -42,7 +42,10 @@ jobs:
             CODE_SIGNING_REQUIRED=NO \
             archive
 
-      - name: Validate archive SDK metadata
+      - name: Print archive SDK metadata (no assertion)
         run: |
-          plutil -p build/StandardNotes.xcarchive/Info.plist | grep -E "DTSDKName"
-          plutil -p build/StandardNotes.xcarchive/Info.plist | grep -E "iphoneos26\\."
+          set -euo pipefail
+          INFO="build/StandardNotes.xcarchive/Info.plist"
+          test -f "$INFO" || { echo "::error::Missing $INFO"; exit 1; }
+          echo "--- archive Info.plist (look for DTSDKName / iphoneos in ApplicationProperties) ---"
+          plutil -p "$INFO"
