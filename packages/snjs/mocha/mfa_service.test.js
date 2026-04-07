@@ -90,12 +90,12 @@ describe('mfa service', () => {
 
     await application.mfa.enableMfa(secret, token)
 
-    sinon.spy(application.settings.settingsApi, 'deleteSetting')
+    sinon.spy(application.settings, 'deleteSetting')
 
     await application.mfa.disableMfa()
 
-    const deleteSettingCall = application.settings.settingsApi.deleteSetting.getCall(0)    
-    const [serverPassword] = deleteSettingCall.args
+    const deleteSettingCall = application.settings.deleteSetting.getCall(0)
+    const serverPassword = deleteSettingCall.args[1]
     expect(typeof serverPassword).to.equal('string')
     expect(serverPassword.length).to.be.above(0)
   }).timeout(Factory.TenSecondTimeout)
@@ -111,11 +111,8 @@ describe('mfa service', () => {
     await application.mfa.enableMfa(secret, token)
     
     const response = await application.dependencies
-      .get(TYPES.SettingsApiService)
-      .deleteSetting({
-        userUuid: application.user.uuid,
-        settingName: 'MFA_SECRET',
-      })
+      .get(TYPES.LegacyApiService)
+      .deleteSetting(application.user.uuid, 'MFA_SECRET')
 
     expect(response.status).to.equal(400)
   }).timeout(Factory.TenSecondTimeout)
@@ -131,12 +128,8 @@ describe('mfa service', () => {
     await application.mfa.enableMfa(secret, token)
     
     const response = await application.dependencies
-      .get(TYPES.SettingsApiService)
-      .deleteSetting({
-        userUuid: application.user.uuid,
-        settingName: 'MFA_SECRET',
-        serverPassword: 'wrong-password'
-      })
+      .get(TYPES.LegacyApiService)
+      .deleteSetting(application.user.uuid, 'MFA_SECRET', 'wrong-password')
 
     expect(response.status).to.equal(400)
   }).timeout(Factory.TenSecondTimeout)
