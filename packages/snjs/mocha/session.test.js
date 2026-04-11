@@ -4,7 +4,7 @@ import WebDeviceInterface from './lib/web_device_interface.js'
 chai.use(chaiAsPromised)
 const expect = chai.expect
 const urlSearchParams = new URLSearchParams(window.location.search)
-const skipSessionCooldownRefreshTest = urlSearchParams.get('skip_session_cooldown_refresh_test') === 'true'
+const skipSessionCooldownTests = urlSearchParams.get('skipSessionCooldownTests') === 'true'
 
 describe('server session', function () {
   this.timeout(Factory.TenSecondTimeout)
@@ -483,7 +483,7 @@ describe('server session', function () {
     await refreshPromise
   })
 
-  ;(skipSessionCooldownRefreshTest ? it.skip : it)(
+  ;(skipSessionCooldownTests ? it.skip : it)(
     'should tell the client to refresh the token if one is used during the cooldown period after a refresh',
     async function () {
     await Factory.registerUserToApplication({
@@ -515,7 +515,9 @@ describe('server session', function () {
     },
   )
 
-  it('if session renewal response is dropped, next sync with server should return a 498 and successfully renew the session', async function () {
+  ;(skipSessionCooldownTests ? it.skip : it)(
+    'if session renewal response is dropped, next sync with server should return a 498 and successfully renew the session',
+    async function () {
     await Factory.registerUserToApplication({
       application: application,
       email: email,
@@ -534,8 +536,9 @@ describe('server session', function () {
     await application.sync.sync(syncOptions)
     await application.sync.sync(syncOptions)
 
-    expect(refreshSpy.callCount).to.equal(2)
-  })
+      expect(refreshSpy.callCount).to.equal(2)
+    },
+  )
 
   it('notes should be synced as expected after refreshing a session', async function () {
     await Factory.registerUserToApplication({
