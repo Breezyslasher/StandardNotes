@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.201.25](https://github.com/standardnotes/app/compare/@standardnotes/web@3.201.24...@standardnotes/web@3.201.25) (2026-04-23)
+
+### Bug Fixes
+
+* Adds dynamic type support for iOS ([#3005](https://github.com/standardnotes/app/issues/3005)) ([6261fd8](https://github.com/standardnotes/app/commit/6261fd8241b36be0e73dd84b39d31059d6077c16))
+* Fixes Super sections drag and drop issues on mobile ([#3003](https://github.com/standardnotes/app/issues/3003)) ([b330890](https://github.com/standardnotes/app/commit/b33089029f5979adf0c8e80a65c29a38945cf899))
+* Prevents unhandled error when attempting to import a blank note ([#3004](https://github.com/standardnotes/app/issues/3004)) ([90ca0c2](https://github.com/standardnotes/app/commit/90ca0c2cfb648d34c97d58b332a10c61daa20fa4))
+
 ## [3.201.24](https://github.com/standardnotes/app/compare/@standardnotes/web@3.201.23...@standardnotes/web@3.201.24) (2026-04-07)
 
 **Note:** Version bump only for package @standardnotes/web

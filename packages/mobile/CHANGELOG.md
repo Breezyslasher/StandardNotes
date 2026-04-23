@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.58.249](https://github.com/standardnotes/app/compare/@standardnotes/mobile@3.58.248...@standardnotes/mobile@3.58.249) (2026-04-23)
+
+### Bug Fixes
+
+* Adds dynamic type support for iOS ([#3005](https://github.com/standardnotes/app/issues/3005)) ([6261fd8](https://github.com/standardnotes/app/commit/6261fd8241b36be0e73dd84b39d31059d6077c16))
+
 ## [3.58.248](https://github.com/standardnotes/app/compare/@standardnotes/mobile@3.58.247...@standardnotes/mobile@3.58.248) (2026-04-07)
 
 **Note:** Version bump only for package @standardnotes/mobile
