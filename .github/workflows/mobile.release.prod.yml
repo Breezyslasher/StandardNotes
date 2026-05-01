@@ -26,8 +26,14 @@ jobs:
           echo "PACKAGE_VERSION=$(grep '"version"' ../web/package.json | cut -d '"' -f 4 | cut -d "-" -f 1)" >> $GITHUB_ENV
       - name: Setup react-native kernel and increase watchers
         run: echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
-      - name: Decode keystore
-        run: echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > android/app/keystore.keystore
+      - name: Generate debug keystore
+        run: |
+         keytool -genkey -v -keystore android/app/keystore.keystore \
+         -storepass android \
+         -alias androiddebugkey \
+         -keypass android \
+         -dname "CN=Android Debug,O=Android,C=US" \
+         -keyalg RSA -keysize 2048 -validity 10000
       - name: Install dependencies
         run: yarn install --immutable
       - run: yarn build:mobile
