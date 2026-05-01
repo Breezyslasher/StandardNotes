@@ -46,7 +46,7 @@ jobs:
         env:
          ANDROID_KEYSTORE_ALIAS: androiddebugkey
          ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD: android
-         ANDROID_KEYSTORE_PASSWORD: androidEY_DATA }}
+         ANDROID_KEYSTORE_PASSWORD: android
         with:
           lane: 'android prod'
           subdirectory: 'packages/mobile'
