@@ -44,12 +44,9 @@ jobs:
       - name: fastlane
         uses: maierj/fastlane-action@v1.4.0
         env:
-          PACKAGE_VERSION: ${{ env.PACKAGE_VERSION }}
-          BUILD_NUMBER: ${{ github.run_number }}
-          ANDROID_KEYSTORE_ALIAS: ${{ secrets.ANDROID_KEYSTORE_ALIAS }}
-          ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD }}
-          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-          GOOGLE_PLAY_JSON_KEY_DATA: ${{ secrets.GOOGLE_PLAY_JSON_KEY_DATA }}
+         ANDROID_KEYSTORE_ALIAS: androiddebugkey
+         ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD: android
+         ANDROID_KEYSTORE_PASSWORD: androidEY_DATA }}
         with:
           lane: 'android prod'
           subdirectory: 'packages/mobile'
