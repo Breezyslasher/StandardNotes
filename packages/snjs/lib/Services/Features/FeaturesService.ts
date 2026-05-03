@@ -1,5 +1,5 @@
 import { MigrateFeatureRepoToUserSettingUseCase } from './UseCase/MigrateFeatureRepoToUserSetting'
-import { arraysEqual, removeFromArray, lastElement, LoggerInterface } from '@standardnotes/utils'
+import { arraysEqual, removeFromArray, LoggerInterface } from '@standardnotes/utils'
 import { ClientDisplayableError } from '@standardnotes/responses'
 import { RoleName, ContentType, Uuid } from '@standardnotes/domain-core'
 import { PureCryptoInterface } from '@standardnotes/sncrypto-common'
@@ -405,18 +405,8 @@ export class FeaturesService
     return this.onlineRoles.includes(roleName.value) || this.offlineRoles.includes(roleName.value)
   }
 
-  public hasMinimumRole(role: string): boolean {
-    const sortedAllRoles = Object.values(RoleName.NAMES)
-
-    const sortedUserRoles = this.rolesBySorting(
-      this.hasFirstPartyOnlineSubscription() ? this.onlineRoles : this.offlineRoles,
-    )
-
-    const highestUserRoleIndex = sortedAllRoles.indexOf(lastElement(sortedUserRoles) as string)
-
-    const indexOfRoleToCheck = sortedAllRoles.indexOf(role)
-
-    return indexOfRoleToCheck <= highestUserRoleIndex
+  public hasMinimumRole(_role: string): boolean {
+    return true
   }
 
   public getFeatureStatus(
