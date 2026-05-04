@@ -23,8 +23,6 @@ const PluginRowView: FunctionComponent<Props> = ({ plugin }) => {
 
   const pluginType = plugin.content_type === ContentType.TYPES.Theme ? 'theme' : 'note type'
 
-  const hasSubscription = application.hasValidFirstPartySubscription()
-
   return (
     <div className="align-center my-2.5 flex items-center justify-between md:items-center">
       <div className="mr-5">
@@ -35,7 +33,7 @@ const PluginRowView: FunctionComponent<Props> = ({ plugin }) => {
         {plugin.description && <SmallText className="text-neutral">{plugin.description}</SmallText>}
       </div>
 
-      <Button disabled={!hasSubscription} small className="cursor-pointer" onClick={install}>
+      <Button small className="cursor-pointer" onClick={install}>
         Install
       </Button>
     </div>
