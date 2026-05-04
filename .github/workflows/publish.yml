@@ -9,26 +9,30 @@ jobs:
   publish-web-docker:
     name: Build and publish Docker Image for Web App
     runs-on: ubuntu-latest
+
     permissions:
       contents: read
       packages: write
+
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Set up Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          registry-url: 'https://registry.npmjs.org'
           node-version-file: '.nvmrc'
           cache: 'yarn'
+
+      - name: Enable corepack (fixes yarn modern issues)
+        run: corepack enable
 
       - name: Install dependencies
         run: yarn install --immutable
 
-      - name: Build
+      - name: Build web app
         run: yarn build:web
 
       - name: Set lowercase image name
@@ -42,22 +46,25 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build Docker image
-        run: |
-          cd packages/web
-          docker build \
-            -t ${{ steps.image.outputs.name }}:${{ github.sha }} \
-            -t ${{ steps.image.outputs.name }}:latest \
-            .
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-      - name: Push to GitHub Container Registry
-        run: |
-          docker push ${{ steps.image.outputs.name }}:${{ github.sha }}
-          docker push ${{ steps.image.outputs.name }}:latest
+      - name: Build and push Docker image (single step, no mismatch)
+        uses: docker/build-push-action@v6
+        with:
+          context: packages/web
+          push: true
+          tags: |
+            ${{ steps.image.outputs.name }}:${{ github.sha }}
+            ${{ steps.image.outputs.name }}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
-      - name: Save Docker image to tarball
+      - name: Export Docker image (FIXED: real docker archive, not OCI)
         run: |
-          docker save ${{ steps.image.outputs.name }}:latest | gzip > standardnotes-web.tar.gz
+          docker pull ${{ steps.image.outputs.name }}:latest
+          docker save ${{ steps.image.outputs.name }}:latest -o standardnotes-web.tar
+          gzip standardnotes-web.tar
 
       - name: Upload Docker image artifact
         uses: actions/upload-artifact@v4
