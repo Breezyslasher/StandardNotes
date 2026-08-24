@@ -90,11 +90,7 @@ export class SubscriptionController extends AbstractViewController implements In
   }
 
   hasFirstPartyOnlineOrOfflineSubscription(): boolean {
-    const offline = this.features.hasFirstPartyOfflineSubscription()
-    if (!this.sessions.isSignedIn() || !this.sessions.isSignedIntoFirstPartyServer()) {
-      return offline
-    }
-    return !!this.subscriptions.getOnlineSubscription() || offline
+    return true
   }
 
   get isSharedSubscription(): boolean {
